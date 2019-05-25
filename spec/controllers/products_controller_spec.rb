@@ -5,9 +5,12 @@ RSpec.describe ProductsController, type: :controller do
   describe 'create' do
 
     it 'creates a new Product' do
-      post :create, params: {name: 'foo', category: 'some category', price: 100}
+      @request.env["CONTENT_TYPE"] = "application/vnd.api+json"
+
+      post :create, params: {data: {type: 'products', attributes: {category: 'some category', price: 100, name: 'some name'}}}
 
       expect(response.status).to eq(201)
+      expect(JSON.parse(response.body)).to eq({})
     end
   end
 
@@ -28,9 +31,9 @@ RSpec.describe ProductsController, type: :controller do
 
   describe 'index' do
 
-  end
+    describe 'filtering by name' do
 
-  describe 'search' do
+    end
 
   end
 end
