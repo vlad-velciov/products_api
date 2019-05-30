@@ -33,8 +33,6 @@ RSpec.describe ProductsController, type: :controller do
 
   describe 'show' do
     let(:product) { FactoryBot.create(:product)}
-
-
   end
 
   describe 'index' do
