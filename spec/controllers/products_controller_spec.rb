@@ -15,11 +15,33 @@ RSpec.describe ProductsController, type: :controller do
   end
 
   describe 'update' do
+    let(:product) { FactoryBot.create(:product) }
 
-    it 'can only update price and category' do
+
+    it 'can update price and category' do
+      put :update, params: {id: product.id, data: {
+        id: product.id,
+        type: 'products',
+        attributes: {
+          price: 23,
+          category: 'Some other category'
+        }}}
+
+      expect(response.status).to eq(200)
+      product.reload
+      expect(product.category).to eq('Some other category')
+      expect(product.price).to eq(23)
 
     end
 
+    it 'cannot update name' do
+      initial_name = product.name
+      put :update, params: {id: product.id, data: {id: product.id, type: 'products', attributes: {name: 'second'}}}
+
+      expect(response.status).to eq(403)
+      product.reload
+      expect(product.name).to eq initial_name
+    end
   end
 
   describe 'delete' do
